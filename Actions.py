@@ -1,4 +1,6 @@
 import os
+import json
+import random
 
 cab_types = ['regular', 'premium', 'xl']
 cabs = {}
@@ -24,5 +26,14 @@ def AssignCab(attributes, context):
 
 
 def BookRestaurant(attributes, context):
-  print(attributes)
-  return "booked"
+
+  restaurants = []
+  with open('./db/restaurants.json') as f:
+    restaurants = json.load(f)
+
+  matches = list(filter(lambda x: x['cuisine'] == attributes['cuisine'] and
+                        x['cost'] == attributes['cost'] and
+                        x['location'] == attributes['location'],
+                        restaurants))
+
+  return 'Your reserveration has been confirmed at ' + random.choice(matches)['name']
