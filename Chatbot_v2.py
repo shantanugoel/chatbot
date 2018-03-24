@@ -10,6 +10,7 @@ import re
 
 from Contexts import *
 from Intents import *
+import Actions
 # from textblob import TextBlob
 # from attributegetter import *
 from generatengrams import ngrammatch
@@ -27,18 +28,27 @@ def check_actions(current_intent, attributes, context):
           return perform_action()
   '''
 
+  action = getattr(Actions, current_intent.action)
+
+  result = action(attributes, context)
+
   context = IntentComplete()
-  return 'action: ' + current_intent.action, context
+  print('action: ' + current_intent.action)
+  return result, context
 
 
 def check_required_params(current_intent, attributes, context):
   '''Collects attributes pertaining to the current intent'''
 
   for para in current_intent.params:
-    if para.required:
+    if para.required == "True":
       if para.name not in attributes:
         if para.name == 'RegNo':
           context = GetRegNo()
+        elif para.name == 'num_passengers':
+          context = GetNumPassengers()
+        elif para.name == 'luggage':
+          context = GetLuggage()
         return random.choice(para.prompts), context
 
   return None, context
@@ -111,6 +121,23 @@ def getattributes(uinput, context, attributes):
         attributes['RegNo'] = match.group()
         context.active = False
 
+    elif context.name == 'num_passengers' and context.active:
+      #TODO: Add conversion of english string numbers
+      match = re.search('[0-9]+', uinput)
+      if match:
+        uinput = re.sub('[0-9]+', '$num_passengers', uinput)
+        attributes['num_passengers'] = match.group()
+        context.active = False
+
+    elif context.name == 'luggage' and context.active:
+      #TODO: Add conversion of english string numbers
+      match = re.search('[0-9]+', uinput)
+      if match:
+        uinput = re.sub('[0-9]+', '$luggage', uinput)
+        attributes['luggage'] = match.group()
+        context.active = False
+
+
     return attributes, uinput
 
 
@@ -166,6 +193,8 @@ class Session:
 
 
 session = Session()
+
+#Actions.CabsInit()
 
 print('BOT: Hi! How may I assist you?')
 
