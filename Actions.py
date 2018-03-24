@@ -21,3 +21,8 @@ def CabsInit():
 def AssignCab(attributes, context):
   print(attributes)
   return "executed"
+
+
+def BookRestaurant(attributes, context):
+  print(attributes)
+  return "booked"

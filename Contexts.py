@@ -49,6 +49,13 @@ class SpellConformation(Context):
 		self.tobecorrected = user_input
 		self.contexttobestored = context
 
+class GetDestination(Context):
+
+	def __init__(self):
+		self.lifespan = 1
+		self.name = 'destination'
+		self.active = True
+
 class GetNumPassengers(Context):
 
 	def __init__(self):
@@ -61,4 +68,25 @@ class GetLuggage(Context):
 	def __init__(self):
 		self.lifespan = 1
 		self.name = 'luggage'
+		self.active = True
+
+class GetCuisine(Context):
+
+	def __init__(self):
+		self.lifespan = 1
+		self.name = 'cuisine'
+		self.active = True
+
+class GetCost(Context):
+
+	def __init__(self):
+		self.lifespan = 1
+		self.name = 'cost'
+		self.active = True
+
+class GetLocation(Context):
+
+	def __init__(self):
+		self.lifespan = 1
+		self.name = 'location'
 		self.active = True

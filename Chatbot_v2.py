@@ -1,8 +1,5 @@
 # coding: utf-8
 
-# In[1]:
-
-
 import json
 import os
 import random
@@ -11,13 +8,15 @@ import re
 from Contexts import *
 from Intents import *
 import Actions
-# from textblob import TextBlob
-# from attributegetter import *
 from generatengrams import ngrammatch
 
 
-# In[2]:
+DEBUG_LEVEL_ERR = 0
+DEBUG_LEVEL_WAR = 1
+DEBUG_LEVEL_INF = 2
+DEBUG_LEVEL_DBG = 3
 
+DEBUG_LEVEL = DEBUG_LEVEL_DBG
 
 def check_actions(current_intent, attributes, context):
   '''This function performs the action for the intent
@@ -40,15 +39,19 @@ def check_actions(current_intent, attributes, context):
 def check_required_params(current_intent, attributes, context):
   '''Collects attributes pertaining to the current intent'''
 
+  contexts_mapping = {
+    'destination': GetDestination,
+    'num_passengers': GetNumPassengers,
+    'luggage': GetLuggage,
+    'cuisine': GetCuisine,
+    'cost': GetCost,
+    'location': GetLocation
+  }
+
   for para in current_intent.params:
     if para.required == "True":
       if para.name not in attributes:
-        if para.name == 'RegNo':
-          context = GetRegNo()
-        elif para.name == 'num_passengers':
-          context = GetNumPassengers()
-        elif para.name == 'luggage':
-          context = GetLuggage()
+        context = contexts_mapping[para.name]()
         return random.choice(para.prompts), context
 
   return None, context
@@ -57,8 +60,7 @@ def check_required_params(current_intent, attributes, context):
 def input_processor(user_input, context, attributes, intent):
   '''Spellcheck and entity extraction functions go here'''
 
-  # uinput = TextBlob(user_input).correct().string
-
+  #TODO: Remove unimportant words and replace synonyms
   # update the attributes, abstract over the entities in user input
   attributes, cleaned_input = getattributes(user_input, context, attributes)
 
@@ -76,16 +78,13 @@ def intentIdentifier(clean_input, context, current_intent):
   clean_input = clean_input.lower()
   scores = ngrammatch(clean_input)
   scores = sorted_by_second = sorted(scores, key=lambda tup: tup[1])
-  # print clean_input
-  # print 'scores', scores
+
+  if DEBUG_LEVEL >= DEBUG_LEVEL_DBG:
+    print('Clean Input: ', clean_input)
+    print('Scores:', scores)
 
   if (current_intent == None):
-    if (clean_input == "search"):
-      return loadIntent('params/newparams.cfg', 'SearchStore')
-    if (clean_input == 'book'):
-      return loadIntent('params/newparams.cfg', 'OrderBook')
-    else:
-      return loadIntent('params/newparams.cfg', scores[-1][0])
+    return loadIntent('params/newparams.cfg', scores[-1][0])
   else:
     # print 'same intent'
     return current_intent
@@ -137,11 +136,7 @@ def getattributes(uinput, context, attributes):
         attributes['luggage'] = match.group()
         context.active = False
 
-
     return attributes, uinput
-
-
-# In[ ]:
 
 
 class Session:
@@ -186,10 +181,11 @@ class Session:
       self.context = FirstGreeting()
       self.current_intent = None
 
+    if DEBUG_LEVEL >= DEBUG_LEVEL_DBG:
+      print('Context: ', self.context.name)
+      print('Attributes: ', self.attributes)
+
     return prompt
-
-
-# In[ ]:
 
 
 session = Session()
