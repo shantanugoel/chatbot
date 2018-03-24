@@ -188,9 +188,10 @@ class Session:
     return prompt
 
 
-session = Session()
+Actions.CabsInit()
+Actions.RestaurantsInit()
 
-#Actions.CabsInit()
+session = Session()
 
 print('BOT: Hi! How may I assist you?')
 

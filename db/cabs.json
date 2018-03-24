@@ -1,0 +1,9 @@
+[
+  {
+    "license": "ABCD1234",
+    "driver_name": "Shantanu Goel",
+    "driver_phone": "1234567890",
+    "cab_type": "regular",
+    "available": "True"
+  }
+]
