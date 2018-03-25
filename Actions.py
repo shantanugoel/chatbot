@@ -43,7 +43,7 @@ def AssignCab(attributes, context):
   elif num_psgrs <= cab_config['psgr_cap_xl'] and luggage <= cab_config['luggage_cap_xl']:
     cab_type = 'xl'
 
-  if cab_type_order[attributes['cab_type']] > cab_type_order[cab_type]:
+  if 'cab_type' in attributes and cab_type_order[attributes['cab_type']] > cab_type_order[cab_type]:
     cab_type = attributes['cab_type']
 
   matches = []

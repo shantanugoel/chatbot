@@ -164,6 +164,12 @@ class Session:
   def reply(self, user_input):
     '''Generate response to user input'''
 
+    if user_input.lower() == "restart" or user_input.lower()== "start":
+      self.attributes = {}
+      self.context = FirstGreeting()
+      self.current_intent = None
+      return "Starting over."
+
     self.attributes, clean_input = input_processor(user_input, self.context, self.attributes, self.current_intent)
 
     self.current_intent = intentIdentifier(clean_input, self.context, self.current_intent)
