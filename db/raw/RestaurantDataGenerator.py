@@ -27,7 +27,7 @@ f.close()
 
 
 data = []
-for i in range(200):
+for i in range(10000):
     name = random.choice(restaurantNames).rstrip('\n')
     cuisine = random.choice(cuisineList).rstrip('\n')
     cost = random.choice(costList).rstrip('\n')
