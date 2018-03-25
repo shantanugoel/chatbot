@@ -144,9 +144,15 @@ def getattributes(uinput, context, attributes):
 
 
 class Session:
+
+  stopList = []
+
   def __init__(self, attributes=None, active_contexts=[FirstGreeting(), IntentComplete()]):
 
     '''Initialise a default session'''
+    with open('stoplist.txt') as f:
+        self.stopList = [word.strip() for word in f]
+    f.close()
 
     # Contexts are flags which control dialogue flow, see Contexts.py
     self.active_contexts = active_contexts
@@ -179,7 +185,14 @@ class Session:
 
     self.attributes, clean_input = input_processor(user_input, self.context, self.attributes, self.current_intent)
 
-    self.current_intent = intentIdentifier(clean_input, self.context, self.current_intent)
+    input_words = clean_input.split()
+    final_input = ''
+
+    for w in input_words:
+        if w not in self.stopList:
+            final_input = final_input +' '+w
+
+    self.current_intent = intentIdentifier(final_input, self.context, self.current_intent)
 
     prompt, self.context = check_required_params(self.current_intent, self.attributes, self.context)
 
