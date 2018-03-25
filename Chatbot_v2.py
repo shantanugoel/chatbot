@@ -193,8 +193,10 @@ Actions.RestaurantsInit()
 
 session = Session()
 
-print('BOT: Hi! How may I assist you?')
-
 while True:
+  if session.context.name == 'FirstGreeting':
+    print('=========')
+    print('BOT: Hi! How may I assist you?')
+
   inp = input('User: ')
   print('BOT:', session.reply(inp))

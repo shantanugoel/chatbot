@@ -2,6 +2,8 @@ import os
 import json
 import random
 
+#TODO: Convert to class
+
 cab_types = ['regular', 'premium', 'xl']
 cabs = {}
 cab_config = {
@@ -49,7 +51,7 @@ def AssignCab(attributes, context):
     cab = random.choice(matches)
     cab['available'] = "False"
     print(cabs)
-    return "Your cab to " + attributes['destination'] + "has been booked. Cab No: " + cab['license'] + \
+    return "Your cab to " + attributes['destination'] + " has been booked. Cab No: " + cab['license'] + \
       " Driver: " + cab['driver_name'] + " Driver Ph: " + cab['driver_phone']
 
   return "Sorry, no cab available for your requirements"
