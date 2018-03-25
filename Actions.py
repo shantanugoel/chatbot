@@ -47,10 +47,12 @@ def AssignCab(attributes, context):
     cab_type = attributes['cab_type']
 
   matches = []
+
   if cab_type:
     matches = list(filter(lambda x: x['cab_type'] == cab_type and
                           x['available'] == "True", cabs))
 
+  print('finding cab type', cab_type)
   # TODO: Retry matches with upgrade of cab type
   if len(matches) > 0:
     cab = random.choice(matches)
