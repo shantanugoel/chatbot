@@ -172,6 +172,9 @@ class Session:
       self.current_intent = None
       return "Starting over."
 
+    if user_input.lower() == 'exit' or user_input.lower() == "bye":
+      exit()
+
     self.attributes, clean_input = input_processor(user_input, self.context, self.attributes, self.current_intent)
 
     self.current_intent = intentIdentifier(clean_input, self.context, self.current_intent)
@@ -204,7 +207,7 @@ session = Session()
 while True:
   if session.context.name == 'FirstGreeting':
     print('=========')
-    print('BOT: Hi! How may I assist you?')
+    print('BOT: Hi! How may I assist you? (Say \'restart\' at anytime to start over or \'bye\' to quit)')
 
   inp = input('User: ')
   print('BOT:', session.reply(inp))
