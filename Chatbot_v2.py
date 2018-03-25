@@ -9,6 +9,7 @@ from Contexts import *
 from Intents import *
 import Actions
 from generatengrams import ngrammatch
+from utils import text2int
 
 
 DEBUG_LEVEL_ERR = 0
@@ -113,27 +114,28 @@ def getattributes(uinput, context, attributes):
     for entity in entities:
       uinput = re.sub(entities[entity], r'$' + entity, uinput, flags=re.IGNORECASE)
 
-    if context.name == 'GetRegNo' and context.active:
-      match = re.search('[0-9]+', uinput)
-      if match:
-        uinput = re.sub('[0-9]+', '$regno', uinput)
-        attributes['RegNo'] = match.group()
-        context.active = False
-
-    elif context.name == 'num_passengers' and context.active:
-      #TODO: Add conversion of english string numbers
+    if context.name == 'num_passengers' and context.active:
       match = re.search('[0-9]+', uinput)
       if match:
         uinput = re.sub('[0-9]+', '$num_passengers', uinput)
         attributes['num_passengers'] = match.group()
         context.active = False
+      else:
+        num = text2int(uinput)
+        uinput = '$num_passengers'
+        attributes['num_passengers'] = num
+        context.active = False
 
     elif context.name == 'luggage' and context.active:
-      #TODO: Add conversion of english string numbers
       match = re.search('[0-9]+', uinput)
       if match:
         uinput = re.sub('[0-9]+', '$luggage', uinput)
         attributes['luggage'] = match.group()
+        context.active = False
+      else:
+        num = text2int(uinput)
+        uinput = '$luggage'
+        attributes['luggage'] = num
         context.active = False
 
     return attributes, uinput
