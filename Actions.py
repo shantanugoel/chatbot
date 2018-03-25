@@ -5,6 +5,11 @@ import random
 #TODO: Convert to class
 
 cab_types = ['regular', 'premium', 'xl']
+cab_type_order = {
+  'regular': 0,
+  'premium': 1,
+  'xl': 2
+}
 cabs = {}
 cab_config = {
     "time_taken_per_km": 2,
@@ -38,9 +43,9 @@ def AssignCab(attributes, context):
   elif num_psgrs <= cab_config['psgr_cap_xl'] and luggage <= cab_config['luggage_cap_xl']:
     cab_type = 'xl'
 
-  # TODO: Add check for user requested cab type
+  if cab_type_order[attributes['cab_type']] > cab_type_order[cab_type]:
+    cab_type = attributes['cab_type']
 
-  print(cabs)
   matches = []
   if cab_type:
     matches = list(filter(lambda x: x['cab_type'] == cab_type and
@@ -50,7 +55,6 @@ def AssignCab(attributes, context):
   if len(matches) > 0:
     cab = random.choice(matches)
     cab['available'] = "False"
-    print(cabs)
     return "Your cab to " + attributes['destination'] + " has been booked. Cab No: " + cab['license'] + \
       " Driver: " + cab['driver_name'] + " Driver Ph: " + cab['driver_phone']
 
