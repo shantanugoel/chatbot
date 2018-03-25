@@ -117,14 +117,16 @@ def getattributes(uinput, context, attributes):
     if context.name == 'num_passengers' and context.active:
       match = re.search('[0-9]+', uinput)
       if match:
-        uinput = re.sub('[0-9]+', '$num_passengers', uinput)
-        attributes['num_passengers'] = match.group()
-        context.active = False
+        if int(match[0]) > 0:
+          uinput = re.sub('[0-9]+', '$num_passengers', uinput)
+          attributes['num_passengers'] = match.group()
+          context.active = False
       else:
         num = text2int(uinput)
-        uinput = '$num_passengers'
-        attributes['num_passengers'] = num
-        context.active = False
+        if num > 0:
+          uinput = '$num_passengers'
+          attributes['num_passengers'] = num
+          context.active = False
 
     elif context.name == 'luggage' and context.active:
       match = re.search('[0-9]+', uinput)
