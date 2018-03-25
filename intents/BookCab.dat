@@ -1,14 +1,37 @@
-book cab
-take cab
-get cab
-I want to book a cab
-I want to take a cab
-I want to get a cab
-book taxi
-take taxi
-get taxi
-I want to book a taxi
-I want to take a taxi
-I want to get a taxi
-I want to go to $destination
-I want to get a $cab_type cab
+I need to go to $destination
+travel to $destination
+going to $destination
+want to go to $destination
+
+$destination
+
+book a cab to $destination
+book a taxi to $destination
+book a car to $destination
+
+book a cab
+book a taxi
+book a car
+
+order a cab to $destination
+order a taxi to $destination
+order a car to $destination
+
+order a cab
+order a taxi
+order a car
+
+get me a car to $destination
+get me a cab to $destination
+get me a taxi to $destination
+
+get a cab
+get a taxi
+get a car
+
+I want to travel to $destination
+I want to go from here to $destination
+I want to travel from here to $destination
+
+like to go from here to $destination
+like to travel to $desintation
